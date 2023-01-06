@@ -1,0 +1,88 @@
+//collections
+public with sharing class collectionsHandsOn {
+
+    //lists
+    public static void buscaClientePJAtivo(){
+        List<Account> listaPJAtivos = [SELECT Id, Name, Active__c FROM Account WHERE Active__c = 'yes'];
+        System.debug('A lista está aqui: ' + listaPJAtivos);
+    }
+
+    public static void buscaParcelaVencida(){
+        List<Parcela__c> listaParcelaVencida = [SELECT Id, Name, Status__c FROM Parcela__c WHERE Status__c = 'Vencida'];
+        System.debug('As parcelas são: ' + listaParcelaVencida);
+    }
+
+    public static void buscaMaiorOportunidade(){
+        List<Opportunity> listaMaiorOportunidade = [SELECT Id, Name, Amount FROM Opportunity ORDER BY Amount DESC LIMIT 1];
+        System.debug('A oportunidade de maior valor é ' + listaMaiorOportunidade);
+    }
+
+    public static void buscaSetor(String setor){ 
+        List<Account> buscaIndustry =  [SELECT Id, Name, Industry FROM Account WHERE Industry =: setor ];
+        System.debug('As contas do setor Biotecnologia são: ' + buscaIndustry);
+    }
+
+    public static void buscaNumeroParcelasPorContrato(String idContrato){
+
+        Map <String,List<Contract>> map1 = new Map<String,List<Contract>>();
+        List<Contract> var = [SELECT Id, Parcela__c , Parcela__r.TotalParcelas__c FROM Contract WHERE Id =: idContrato];
+
+        map1.put('800Dn000000ktLgIAI', var );
+        System.debug(map1.get('800Dn000000ktLgIAI'));
+    }        
+
+    //sets
+    public static void buscaAtivosViaSet(){
+        Set<Account> ativosSet = new set<Account>([SELECT Id, Name, Active__c FROM Account WHERE Active__c = 'yes']);
+        System.debug('O Set está aqui: ' + ativosSet);
+    }
+
+    public static void buscaParcelaVencidaViaSet(){
+        Set<Parcela__c> parcelaVencidaSet = new Set<Parcela__c>([SELECT Id, Name, Status__c FROM Parcela__c WHERE Status__c = 'Vencida']);
+        System.debug('As parcelas são: ' + parcelaVencidaSet);
+    }
+
+    public static void buscaMaiorOportunidadeViaSet(){
+        Set<Opportunity> MaiorOportunidadeSet = new Set<Opportunity> ([SELECT Id, Name, Amount FROM Opportunity ORDER BY Amount DESC LIMIT 1]);
+        System.debug('A oportunidade de maior valor é ' + MaiorOportunidadeSet);
+    }
+
+    public static void buscaSetorViaSet(String setor){ 
+        Set<Account> buscaIndustrySet = new Set<Account>( [SELECT Id, Name, Industry FROM Account WHERE Industry =: setor ]);
+        System.debug('As contas do setor Biotecnologia são: ' + buscaIndustrySet);
+    }
+
+    //maps
+    public static void buscaClientePJAtivoViaMap(){
+        Map<String, List<Account>> buscaClientePJAtivoMap = new Map<String, List< Account>> ();
+        List<Account> buscaAtivos = [SELECT Id, Name, Active__c FROM Account WHERE Active__c = 'yes'];
+        buscaClientePJAtivoMap.put('Id de uma Account', buscaAtivos );
+
+        System.debug(buscaClientePJAtivoMap.get('Id de uma Account'));
+    }
+
+    public static void buscaParcelaVencidaViaMap(){
+        Map<String, List<Parcela__c>> ParcelaVencidaMap = new Map<String, List<Parcela__c>> ();
+        List<Parcela__c> listaParcelaVencida = [SELECT Id, Name, Status__c FROM Parcela__c WHERE Status__c = 'Vencida'];
+        ParcelaVencidaMap.put('Id de uma Parcela', listaParcelaVencida );
+
+        System.debug('As parcelas são: ' + ParcelaVencidaMap.get('Id de uma Parcela'));
+        
+    }
+
+    public static void buscaMaiorOportunidadeViaMap(){
+        Map<String, List<Opportunity>> maiorOportunidadeMap = new Map<String, List<Opportunity>>();
+        List<Opportunity>  listaMaiorOportunidade = [SELECT Id, Name, Amount FROM Opportunity ORDER BY Amount DESC LIMIT 1];
+        maiorOportunidadeMap.put('Id de uma Oportunidade', listaMaiorOportunidade );
+
+        System.debug('A oportunidade de maior valor é ' + maiorOportunidadeMap.get('Id de uma Oportunidade'));
+    }
+
+    public static void buscaSetorViaMap(String setor){ 
+        Map <String, List<Account>> name = new Map <String,List<Account>>();
+        List<Account> helpList = [SELECT Id, Name, Industry FROM Account WHERE Industry =: setor];
+        name.put('Id ', helpList);
+    
+        System.debug('As contas do setor Biotecnologia são: ' + name.get('Id '));
+    }
+}
